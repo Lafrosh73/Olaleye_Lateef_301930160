@@ -1,62 +1,143 @@
-# MIT 8103 Advanced Database Systems
+# 🗨️ Social Media Comment System
 
-**Social Media Comment System** · Lateef Olaleye · Student ID 301930160
+**MIT 8103 · Advanced Database Systems**
+**Author:** Lateef Olaleye · **Student ID:** 301930160
 
-## Case study
+A relational and document-database design for a social media platform where members publish posts, comment on posts, and react to comments. The project covers relational modelling in **PostgreSQL**, query optimisation, transactions and concurrency, an event-oriented **MongoDB** model, and a distributed/cloud design discussion.
 
-My case study is Social Media Comment System. I designed the database for members publish posts and comment on posts., members react to comments. and an instructor reviews relational queries, constraints, transactions, and an event-oriented MongoDB model., with separate tables named users, posts, comments and reactions. It supports these operations: create and retrieve posts and comments; find recent comments on a post; count reactions on comments grouped by post; add a reaction while preventing duplicate reactions by the same member to the same comment.
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-relational-336791?logo=postgresql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-event%20model-47A248?logo=mongodb&logoColor=white)
+![Status](https://img.shields.io/badge/status-submitted-brightgreen)
 
-## Portfolio 1: Database Design and Modelling
+---
 
-I organised the relational design into 4 tables. Primary keys identify records, foreign keys preserve the links, and checks enforce the stated business rules. A comment body must contain between 1 and 2000 characters. The normalisation examples show the sample data at 1NF, 2NF and 3NF. All 13 deliberately invalid inserts were rejected without changing the valid sample rows.
+## 📌 Case Study
+
+**Domain:** Social Media / Comment System
+
+The database supports members who publish posts, comment on posts, and react to comments. It uses four tables: `users`, `posts`, `comments` and `reactions`.
+
+**Supported operations**
+
+- Create and retrieve posts and comments
+- Find recent comments on a post
+- Count reactions on comments, grouped by post
+- Add a reaction while preventing duplicate reactions by the same member on the same comment
+
+---
+
+## 📂 Portfolio Overview
+
+| # | Portfolio | Focus | Key result |
+|---|-----------|-------|------------|
+| 1 | Database Design and Modelling | Keys, constraints, normalisation | 13 invalid inserts rejected, valid rows unchanged |
+| 2 | Query Processing and Optimisation | Joins, indexing, query plans | Median lookup 0.786 ms → 0.144 ms |
+| 3 | Transactions and Concurrency | COMMIT, ROLLBACK, isolation, locking | `SELECT FOR UPDATE` preserved all increments |
+| 4 | NoSQL and Advanced Data Models | MongoDB `comment_events` | 4 events inserted, 4 queries verified |
+| 5 | Distributed and Cloud Exercise | Replication and sharding (discussion) | 3 replica members across failure zones |
+
+---
+
+## 1️⃣ Database Design and Modelling
+
+The relational design is organised into **4 tables**. Primary keys identify records, foreign keys preserve the links between them, and check constraints enforce the business rules.
+
+- **Business rule:** a comment body must contain between **1 and 2000 characters**.
+- **Normalisation:** examples show the sample data at 1NF, 2NF and 3NF.
+- **Constraint testing:** all **13 deliberately invalid inserts were rejected** without changing the valid sample rows.
 
 ![Social Media Comment System ER diagram](images/Olaleye_Lateef_301930160_ERDiagram.png)
 
-Figure 1. Tables, keys and relationships. PK: primary key; FK: foreign key; UK: unique value.
+*Figure 1. Tables, keys and relationships. PK: primary key; FK: foreign key; UK: unique value.*
 
-<!-- PAGE BREAK -->
+---
 
-## Portfolio 2: Query Processing and Optimisation
+## 2️⃣ Query Processing and Optimisation
 
-I ran three SQL queries against the sample records. The join returned 2 rows and included A synthetic comment. with A synthetic post.. For the index comparison, I used 20,000 separate performance rows. The median lookup time changed from 0.786 ms to 0.144 ms. Both phases returned the same records. The measured plan used the new index. These timings apply to this lookup and environment.
+Three SQL queries were run against the sample records.
 
-## Portfolio 3: Transactions and Concurrency
+- **Join result:** the join returned **2 rows**, including *A synthetic comment* paired with *A synthetic post*.
+- **Index comparison:** tested on **20,000 separate performance rows**.
+- **Performance:** median lookup time improved from **0.786 ms to 0.144 ms**.
+- **Correctness:** both phases returned the same records.
+- **Query plan:** the measured plan used the new index.
 
-I used a temporary counter on reactions to test COMMIT, ROLLBACK and READ COMMITTED isolation. The uncommitted update remained hidden from the other session, and ROLLBACK restored the earlier committed value. Without locking, two increments left the counter at 2. With SELECT FOR UPDATE, Session B waited for Session A and the final value was 3. The helper is confined to this exercise; the case's original business fields stay unchanged.
+> ⚠️ These timings apply to this specific lookup and environment.
 
-## Portfolio 4: NoSQL and Advanced Data Models
+---
 
-I used comment_events for the case's event documents. MongoDB inserted 4 sample events and returned the expected results for 4 queries. Validation rejected an invalid date type and a duplicate event ID. Embedded snapshots keep related details with an event, while the details field can differ by event type. These are fictional events; PostgreSQL continues to enforce its relational rules.
+## 3️⃣ Transactions and Concurrency
 
-## Repository and evidence
+A temporary counter on reactions was used to test `COMMIT`, `ROLLBACK` and `READ COMMITTED` isolation.
 
-https://github.com/Lafrosh73/Olaleye_Lateef_301930160
+| Scenario | Outcome |
+|----------|---------|
+| Uncommitted update | Stayed hidden from the other session |
+| `ROLLBACK` | Restored the earlier committed value |
+| Two increments, **no locking** | Counter ended at **2** (lost update) |
+| Two increments, **`SELECT FOR UPDATE`** | Session B waited for Session A; final value **3** |
 
-The portfolio folders contain the SQL and JavaScript, explanations, query plans, result tables and screenshots.
+The helper counter is confined to this exercise. The case's original business fields remain unchanged.
 
+---
 
-<!-- PAGE BREAK -->
+## 4️⃣ NoSQL and Advanced Data Models
 
-## Portfolio 5: Distributed and Cloud Database Exercise
+The `comment_events` collection stores the case's event documents in MongoDB.
 
-I proposed three MongoDB replica members across separate failure zones. The discussion covers primary elections, majority acknowledgement, secondary lag and sharding trade-offs for comment_events. Replication supports availability, while backups address recovery. PostgreSQL needs its own availability plan. This is the permitted discussion option; no live replica set or failover test was deployed.
+- **4 sample events** inserted; **4 queries** returned the expected results
+- **Validation** rejected an invalid date type and a duplicate event ID
+- **Embedded snapshots** keep related details together with each event
+- The **`details` field** can differ by event type
+- Events are fictional; PostgreSQL continues to enforce the relational rules
 
-## Individual reflection
+---
 
-I kept users, posts, comments, reactions in separate tables so their details could be maintained without repeating them in every related record. A comment body must contain between 1 and 2000 characters. The constraint tests check this alongside the required values and record links. One issue illustrated by the two-session exercise is that both sessions can read the same value before either update is committed. Locking the row before reading preserves both increments. The index comparison also shows why I need to check the execution plan as well as the final answer: the same result can require different amounts of database work.
+## 5️⃣ Distributed and Cloud Database Exercise
 
-## AI-use declaration
+Proposed design: **three MongoDB replica members across separate failure zones.**
 
-I used GitHub Copilot and the portfolio generator to help prepare the database model, scripts and explanations. The generator ran the PostgreSQL and MongoDB exercises, checked their outputs and captured the result images.  I remain responsible for checking and explaining the submitted work.
+The discussion covers:
 
-## References
+- Primary elections
+- Majority acknowledgement
+- Secondary lag
+- Sharding trade-offs for `comment_events`
 
-- [PostgreSQL: constraints](https://www.postgresql.org/docs/17/ddl-constraints.html)
-- [PostgreSQL: EXPLAIN](https://www.postgresql.org/docs/17/using-explain.html)
-- [PostgreSQL: isolation](https://www.postgresql.org/docs/17/transaction-iso.html)
-- [PostgreSQL: row locks](https://www.postgresql.org/docs/17/explicit-locking.html)
-- [MongoDB: data modelling](https://www.mongodb.com/docs/manual/data-modeling/)
-- [MongoDB: replication](https://www.mongodb.com/docs/manual/replication/)
-- [MongoDB: sharding](https://www.mongodb.com/docs/manual/sharding/)
-- [Mermaid: ER diagrams](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)
+**Key points:** replication supports availability, while backups address recovery. PostgreSQL requires its own availability plan.
 
+> ℹ️ This is the permitted discussion option. No live replica set or failover test was deployed.
+
+---
+
+## 🧠 Individual Reflection
+
+- **Separate tables:** `users`, `posts`, `comments` and `reactions` are kept separate so details can be maintained without repeating them in every related record.
+- **Constraint tests:** they verify the 1–2000 character comment rule alongside required values and record links.
+- **Concurrency lesson:** both sessions can read the same value before either update is committed. Locking the row before reading preserves both increments.
+- **Optimisation lesson:** always check the execution plan as well as the final answer, because the same result can require very different amounts of database work.
+
+---
+
+## 🤖 AI-Use Declaration
+
+I used **GitHub Copilot** and the **portfolio generator** to help prepare the database model, scripts and explanations. The generator ran the PostgreSQL and MongoDB exercises, checked their outputs and captured the result images. I remain responsible for checking and explaining the submitted work.
+
+---
+
+## 🗂️ Repository Contents
+
+Each portfolio folder contains the SQL and JavaScript, explanations, query plans, result tables and screenshots as evidence.
+
+---
+
+## 📚 References
+
+- [PostgreSQL: Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
+- [PostgreSQL: EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
+- [PostgreSQL: Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [PostgreSQL: Explicit Locking (Row Locks)](https://www.postgresql.org/docs/current/explicit-locking.html)
+- [MongoDB: Data Modelling](https://www.mongodb.com/docs/manual/data-modeling/)
+- [MongoDB: Replication](https://www.mongodb.com/docs/manual/replication/)
+- [MongoDB: Sharding](https://www.mongodb.com/docs/manual/sharding/)
+- [Mermaid: ER Diagrams](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)
