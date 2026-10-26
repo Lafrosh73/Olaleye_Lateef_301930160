@@ -1,4 +1,4 @@
-# 🗨️ Social Media Comment System
+# Social Media Comment System
 
 **MIT 8103 · Advanced Database Systems**
 **Author:** Lateef Olaleye · **Student ID:** 301930160
@@ -11,7 +11,7 @@ A relational and document-database design for a social media platform where memb
 
 ---
 
-## 📌 Case Study
+## Case Study
 
 **Domain:** Social Media / Comment System
 
@@ -26,7 +26,7 @@ The database supports members who publish posts, comment on posts, and react to 
 
 ---
 
-## 📂 Portfolio Overview
+## Portfolio Overview
 
 | # | Portfolio | Focus | Key result |
 |---|-----------|-------|------------|
@@ -38,7 +38,7 @@ The database supports members who publish posts, comment on posts, and react to 
 
 ---
 
-## 1️⃣ Database Design and Modelling
+## Portfolio 1: Database Design and Modelling
 
 The relational design is organised into **4 tables**. Primary keys identify records, foreign keys preserve the links between them, and check constraints enforce the business rules.
 
@@ -52,7 +52,7 @@ The relational design is organised into **4 tables**. Primary keys identify reco
 
 ---
 
-## 2️⃣ Query Processing and Optimisation
+## Portfolio 2: Query Processing and Optimisation
 
 Three SQL queries were run against the sample records.
 
@@ -66,7 +66,7 @@ Three SQL queries were run against the sample records.
 
 ---
 
-## 3️⃣ Transactions and Concurrency
+## Portfolio 3: Transactions and Concurrency
 
 A temporary counter on reactions was used to test `COMMIT`, `ROLLBACK` and `READ COMMITTED` isolation.
 
@@ -81,7 +81,7 @@ The helper counter is confined to this exercise. The case's original business fi
 
 ---
 
-## 4️⃣ NoSQL and Advanced Data Models
+## Portfolio 4: NoSQL and Advanced Data Models
 
 The `comment_events` collection stores the case's event documents in MongoDB.
 
@@ -93,7 +93,7 @@ The `comment_events` collection stores the case's event documents in MongoDB.
 
 ---
 
-## 5️⃣ Distributed and Cloud Database Exercise
+## Portfolio 5: Distributed and Cloud Database Exercise
 
 Proposed design: **three MongoDB replica members across separate failure zones.**
 
@@ -106,11 +106,11 @@ The discussion covers:
 
 **Key points:** replication supports availability, while backups address recovery. PostgreSQL requires its own availability plan.
 
-> ℹ️ This is the permitted discussion option. No live replica set or failover test was deployed.
+>  This is the permitted discussion option. No live replica set or failover test was deployed.
 
 ---
 
-## 🧠 Individual Reflection
+##  Individual Reflection
 
 - **Separate tables:** `users`, `posts`, `comments` and `reactions` are kept separate so details can be maintained without repeating them in every related record.
 - **Constraint tests:** they verify the 1–2000 character comment rule alongside required values and record links.
@@ -119,19 +119,19 @@ The discussion covers:
 
 ---
 
-## 🤖 AI-Use Declaration
+##  AI-Use Declaration
 
 I used **GitHub Copilot** and the **portfolio generator** to help prepare the database model, scripts and explanations. The generator ran the PostgreSQL and MongoDB exercises, checked their outputs and captured the result images. I remain responsible for checking and explaining the submitted work.
 
 ---
 
-## 🗂️ Repository Contents
+##  Repository Contents
 
 Each portfolio folder contains the SQL and JavaScript, explanations, query plans, result tables and screenshots as evidence.
 
 ---
 
-## 📚 References
+##  References
 
 - [PostgreSQL: Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
 - [PostgreSQL: EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html)
