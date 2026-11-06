@@ -40,5 +40,5 @@ ALTER TABLE portfolio."comments" ADD CONSTRAINT "fk_comments_0" FOREIGN KEY ("po
 ALTER TABLE portfolio."comments" ADD CONSTRAINT "fk_comments_1" FOREIGN KEY ("author_id") REFERENCES portfolio."users" ("user_id");
 ALTER TABLE portfolio."reactions" ADD CONSTRAINT "fk_reactions_0" FOREIGN KEY ("comment_id") REFERENCES portfolio."comments" ("comment_id");
 ALTER TABLE portfolio."reactions" ADD CONSTRAINT "fk_reactions_1" FOREIGN KEY ("user_id") REFERENCES portfolio."users" ("user_id");
-ALTER TABLE portfolio."comments" ADD CONSTRAINT "comment_body_valid" CHECK ("body" = 'A synthetic comment.');
+ALTER TABLE portfolio."comments" ADD CONSTRAINT "comment_body_valid" CHECK (char_length("body") BETWEEN 1 AND 2000);
 COMMIT;
